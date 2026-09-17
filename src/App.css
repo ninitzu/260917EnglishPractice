@@ -493,3 +493,84 @@
   border-radius: 58% 42% 52% 48% / 50% 54% 46% 50%;
   transform: rotate(-5deg);
 }
+
+/* AI suggestions */
+.level-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 30px 24px 32px;
+  text-align: center;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  box-shadow: var(--shadow-sm);
+}
+
+.level-card__eyebrow {
+  font-size: 12.5px;
+  color: var(--ink-faint);
+}
+
+.level-card__level {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 52px;
+  line-height: 1.15;
+  color: var(--accent);
+}
+
+.level-card__detail {
+  font-size: 13.5px;
+  color: var(--ink-soft);
+}
+
+.key-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  font-size: 13.5px;
+  color: var(--ink-soft);
+  padding: 14px 18px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+
+.key-row__actions {
+  display: flex;
+  gap: 12px;
+}
+
+.form__label {
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+.form__note {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--ink-faint);
+}
+
+.error {
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--wrong);
+  background: var(--wrong-wash);
+  border-radius: 14px;
+  padding: 14px 18px;
+}
+
+.added-tag {
+  font-size: 13px;
+  color: var(--correct);
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+}

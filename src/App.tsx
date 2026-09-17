@@ -5,14 +5,16 @@ import { WordList } from "./components/WordList";
 import { Flashcards } from "./components/Flashcards";
 import { Quiz } from "./components/Quiz";
 import { Backdrop } from "./components/Backdrop";
+import { AiSuggest } from "./components/AiSuggest";
 import { isDue, MAX_BOX } from "./leitner";
 
-type Tab = "flashcards" | "quiz" | "words";
+type Tab = "flashcards" | "quiz" | "words" | "ai";
 
 const TABS: { id: Tab; label: string }[] = [
   { id: "flashcards", label: "플래시카드" },
   { id: "quiz", label: "퀴즈" },
   { id: "words", label: "단어장" },
+  { id: "ai", label: "AI 추천" },
 ];
 
 function App() {
@@ -67,6 +69,7 @@ function App() {
             onDelete={deleteWord}
           />
         )}
+        {tab === "ai" && <AiSuggest words={words} onAdd={addWord} />}
       </main>
     </div>
   );
