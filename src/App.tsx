@@ -21,11 +21,16 @@ function App() {
   return (
     <div className="app">
       <header className="app__header">
-        <h1>English Practice</h1>
+        <div className="app__title-row">
+          <h1>
+            English <span className="script">Practice</span>
+          </h1>
+          <span className="sticker">오늘도 화이팅</span>
+        </div>
         <div className="app__stats">
           <span>전체 {stats.total}</span>
           <span>오늘 복습 {stats.due}</span>
-          <span>완전 암기 {stats.mastered}</span>
+          <span className="app__stats-mastered">완전 암기 {stats.mastered}</span>
         </div>
       </header>
 

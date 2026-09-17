@@ -1,22 +1,31 @@
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
+  --text: #75647a;
+  --text-h: #2b1832;
+  --bg: #fdf2f8;
+  --bg-blob: #f6e3f2;
+  --card-bg: #ffffff;
+  --border: #f0dced;
+  --code-bg: #f7e9f7;
+  --accent: #3a1740;
+  --accent-soft: #7c4a86;
+  --accent-bg: #f3e3f7;
+  --accent-border: rgba(58, 23, 64, 0.25);
+  --sticker-bg: #fde68a;
+  --sticker-text: #6b5000;
+  --success: #2f9e6b;
+  --success-bg: rgba(47, 158, 107, 0.12);
+  --danger: #e0507a;
+  --danger-bg: rgba(224, 80, 122, 0.12);
   --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+    rgba(58, 23, 64, 0.1) 0 10px 25px -5px, rgba(58, 23, 64, 0.06) 0 4px 6px -2px;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --sans: 'Poppins', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --heading: 'Poppins', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --script: 'Caveat', cursive;
   --mono: ui-monospace, Consolas, monospace;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
+  font: 16px/155% var(--sans);
+  letter-spacing: 0.1px;
   color-scheme: light dark;
   color: var(--text);
   background: var(--bg);
@@ -24,29 +33,29 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
+    --text: #c9b6cf;
+    --text-h: #f6ecf8;
+    --bg: #1c1420;
+    --bg-blob: #2a1e30;
+    --card-bg: #271b2c;
+    --border: #3a2c40;
+    --code-bg: #322639;
+    --accent: #e3b6ea;
+    --accent-soft: #cf9ad9;
+    --accent-bg: rgba(227, 182, 234, 0.14);
+    --accent-border: rgba(227, 182, 234, 0.35);
+    --sticker-bg: #f3d36b;
+    --sticker-text: #3a2c00;
+    --success: #5ed6a2;
+    --success-bg: rgba(94, 214, 162, 0.14);
+    --danger: #f28aa8;
+    --danger-bg: rgba(242, 138, 168, 0.14);
     --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
+      rgba(0, 0, 0, 0.45) 0 10px 25px -5px, rgba(0, 0, 0, 0.3) 0 4px 6px -2px;
   }
 }
 
@@ -54,7 +63,6 @@
   width: 640px;
   max-width: 100%;
   margin: 0 auto;
-  border-inline: 1px solid var(--border);
   min-height: 100svh;
   display: flex;
   flex-direction: column;
@@ -76,33 +84,40 @@ input {
 
 body {
   margin: 0;
+  background:
+    radial-gradient(480px 320px at 12% -8%, var(--bg-blob), transparent),
+    radial-gradient(420px 300px at 110% 20%, var(--bg-blob), transparent),
+    var(--bg);
+  min-height: 100svh;
 }
 
 h1,
 h2 {
   font-family: var(--heading);
-  font-weight: 500;
+  font-weight: 600;
   color: var(--text-h);
 }
 
 h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
+  font-size: 34px;
+  letter-spacing: -0.6px;
+  margin: 0;
 }
+
+h1 .script {
+  font-family: var(--script);
+  font-weight: 700;
+  color: var(--accent);
+  font-size: 1.15em;
+}
+
 h2 {
-  font-size: 24px;
+  font-size: 20px;
   line-height: 118%;
-  letter-spacing: -0.24px;
+  letter-spacing: -0.2px;
   margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
 }
+
 p {
   margin: 0;
 }
