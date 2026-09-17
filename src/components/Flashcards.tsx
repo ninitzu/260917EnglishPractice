@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import type { Word } from "../types";
 import { isDue } from "../leitner";
+import { MasteryDots } from "./MasteryDots";
 
 interface FlashcardsProps {
   words: Word[];
@@ -16,16 +17,17 @@ export function Flashcards({ words, onReview }: FlashcardsProps) {
   const current = dueWords[index];
 
   if (words.length === 0) {
-    return <p className="empty-state">먼저 단어장에서 단어를 추가해주세요.</p>;
+    return <p className="notice">먼저 단어장에서 단어를 추가해주세요.</p>;
   }
 
   if (!current) {
     return (
-      <div className="session-complete">
-        <p className="empty-state">
+      <div className="notice">
+        <span className="notice__sticker">All done!</span>
+        <p>
           {sessionDone > 0
-            ? `오늘 복습할 단어를 모두 마쳤어요! (${sessionDone}개 학습)`
-            : "오늘 복습할 단어가 없어요. 잘하고 있어요!"}
+            ? `오늘 복습할 단어를 모두 마쳤어요. ${sessionDone}개 학습 완료.`
+            : "오늘 복습할 단어가 없어요. 잘하고 있어요."}
         </p>
       </div>
     );
@@ -39,38 +41,47 @@ export function Flashcards({ words, onReview }: FlashcardsProps) {
   };
 
   return (
-    <div className="flashcards">
-      <p className="flashcards__progress">
-        오늘 복습: {index + 1} / {dueWords.length}
+    <section className="stage">
+      <p className="stage__progress">
+        카드 {index + 1} / {dueWords.length}
       </p>
-      <div
-        className={`flashcard ${flipped ? "flashcard--flipped" : ""}`}
-        onClick={() => setFlipped((f) => !f)}
-        role="button"
-        tabIndex={0}
-      >
-        <div className="flashcard__face">
+
+      <div className="card-wrap">
+        <span className="sticker">Keep going</span>
+        <button
+          type="button"
+          className="card card--tap"
+          onClick={() => setFlipped((f) => !f)}
+          aria-label={flipped ? "단어 보기" : "뜻 보기"}
+        >
           {!flipped ? (
-            <span className="flashcard__term">{current.term}</span>
+            <span className="card__term">{current.term}</span>
           ) : (
-            <div className="flashcard__back">
-              <span className="flashcard__meaning">{current.meaning}</span>
-              {current.example && <span className="flashcard__example">{current.example}</span>}
-            </div>
+            <span className="card__back">
+              <span className="card__meaning">{current.meaning}</span>
+              {current.example && (
+                <span className="quote">{current.example}</span>
+              )}
+            </span>
           )}
-        </div>
+          <span className="card__meter">
+            <MasteryDots box={current.box} />
+          </span>
+        </button>
       </div>
-      <p className="flashcards__hint">카드를 클릭하면 뜻이 보여요</p>
-      {flipped && (
-        <div className="flashcards__actions">
-          <button className="danger" onClick={() => goNext(false)}>
-            몰랐어요
-          </button>
-          <button className="primary" onClick={() => goNext(true)}>
+
+      {flipped ? (
+        <div className="stage__actions">
+          <button className="btn btn--primary" onClick={() => goNext(true)}>
             알았어요
           </button>
+          <button className="btn btn--ghost" onClick={() => goNext(false)}>
+            아직 모르겠어요
+          </button>
         </div>
+      ) : (
+        <p className="stage__hint">카드를 누르면 뜻이 보여요</p>
       )}
-    </div>
+    </section>
   );
 }

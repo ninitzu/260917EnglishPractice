@@ -16,9 +16,11 @@ function shuffle<T>(arr: T[]): T[] {
 }
 
 function buildQuestion(words: Word[], target: Word) {
-  const distractors = shuffle(words.filter((w) => w.id !== target.id)).slice(0, 3);
-  const options = shuffle([target, ...distractors]);
-  return options;
+  const distractors = shuffle(words.filter((w) => w.id !== target.id)).slice(
+    0,
+    3,
+  );
+  return shuffle([target, ...distractors]);
 }
 
 export function Quiz({ words, onReview }: QuizProps) {
@@ -31,20 +33,19 @@ export function Quiz({ words, onReview }: QuizProps) {
   const options = useMemo(
     () => (current ? buildQuestion(words, current) : []),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [current?.id, words.length]
+    [current?.id, words.length],
   );
 
   if (words.length < 4) {
-    return (
-      <p className="empty-state">퀴즈를 풀려면 단어가 4개 이상 필요해요. 단어를 더 추가해주세요!</p>
-    );
+    return <p className="notice">퀴즈를 풀려면 단어가 4개 이상 필요해요.</p>;
   }
 
   if (!current) {
     return (
-      <div className="session-complete">
-        <p className="empty-state">
-          퀴즈 완료! {score.total}문제 중 {score.correct}개 맞혔어요.
+      <div className="notice">
+        <span className="notice__sticker">Nice work</span>
+        <p>
+          퀴즈 완료. {score.total}문제 중 {score.correct}개 정답.
         </p>
       </div>
     );
@@ -54,46 +55,58 @@ export function Quiz({ words, onReview }: QuizProps) {
     if (selectedId) return;
     const wasCorrect = optionId === current.id;
     setSelectedId(optionId);
-    setScore((s) => ({ correct: s.correct + (wasCorrect ? 1 : 0), total: s.total + 1 }));
+    setScore((s) => ({
+      correct: s.correct + (wasCorrect ? 1 : 0),
+      total: s.total + 1,
+    }));
     onReview(current.id, wasCorrect);
   };
 
-  const handleNext = () => {
-    setSelectedId(null);
-    setIndex((i) => i + 1);
-  };
-
   return (
-    <div className="quiz">
-      <p className="quiz__progress">
-        문제 {index + 1} / {order.length} · 점수 {score.correct}/{score.total}
+    <section className="stage">
+      <p className="stage__progress">
+        {index + 1} / {order.length} · 정답 {score.correct}개
       </p>
-      <h2 className="quiz__term">{current.term}</h2>
-      <p className="quiz__instruction">알맞은 뜻을 고르세요</p>
-      <div className="quiz__options">
+
+      <h2 className="display">{current.term}</h2>
+      <p className="stage__hint">알맞은 뜻을 고르세요</p>
+
+      <div className="choices">
         {options.map((opt) => {
-          const isSelected = selectedId === opt.id;
+          const answered = selectedId !== null;
           const isAnswer = opt.id === current.id;
-          const showResult = selectedId !== null;
           const className = [
-            "quiz__option",
-            showResult && isAnswer ? "quiz__option--correct" : "",
-            showResult && isSelected && !isAnswer ? "quiz__option--wrong" : "",
+            "choice",
+            answered && isAnswer ? "is-correct" : "",
+            answered && selectedId === opt.id && !isAnswer ? "is-wrong" : "",
           ]
             .filter(Boolean)
             .join(" ");
           return (
-            <button key={opt.id} className={className} onClick={() => handleSelect(opt.id)}>
+            <button
+              key={opt.id}
+              className={className}
+              onClick={() => handleSelect(opt.id)}
+            >
               {opt.meaning}
             </button>
           );
         })}
       </div>
+
       {selectedId && (
-        <button className="primary quiz__next" onClick={handleNext}>
-          다음 문제
-        </button>
+        <div className="stage__actions">
+          <button
+            className="btn btn--primary"
+            onClick={() => {
+              setSelectedId(null);
+              setIndex((i) => i + 1);
+            }}
+          >
+            다음 문제
+          </button>
+        </div>
       )}
-    </div>
+    </section>
   );
 }

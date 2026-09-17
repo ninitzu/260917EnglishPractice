@@ -36,8 +36,8 @@ export function useWords() {
               meaning: input.meaning.trim(),
               example: input.example?.trim() || undefined,
             }
-          : w
-      )
+          : w,
+      ),
     );
   }, []);
 
@@ -47,7 +47,7 @@ export function useWords() {
 
   const reviewWord = useCallback((id: string, wasCorrect: boolean) => {
     setWords((prev) =>
-      prev.map((w) => (w.id === id ? applyReview(w, wasCorrect) : w))
+      prev.map((w) => (w.id === id ? applyReview(w, wasCorrect) : w)),
     );
   }, []);
 

@@ -4,9 +4,16 @@ import { useWords } from "./hooks/useWords";
 import { WordList } from "./components/WordList";
 import { Flashcards } from "./components/Flashcards";
 import { Quiz } from "./components/Quiz";
+import { Backdrop } from "./components/Backdrop";
 import { isDue, MAX_BOX } from "./leitner";
 
 type Tab = "flashcards" | "quiz" | "words";
+
+const TABS: { id: Tab; label: string }[] = [
+  { id: "flashcards", label: "플래시카드" },
+  { id: "quiz", label: "퀴즈" },
+  { id: "words", label: "단어장" },
+];
 
 function App() {
   const { words, addWord, updateWord, deleteWord, reviewWord } = useWords();
@@ -20,39 +27,45 @@ function App() {
 
   return (
     <div className="app">
-      <header className="app__header">
-        <div className="app__title-row">
-          <h1>
-            English <span className="script">Practice</span>
-          </h1>
-          <span className="sticker">오늘도 화이팅</span>
-        </div>
-        <div className="app__stats">
-          <span>전체 {stats.total}</span>
-          <span>오늘 복습 {stats.due}</span>
-          <span className="app__stats-mastered">완전 암기 {stats.mastered}</span>
-        </div>
+      <Backdrop />
+
+      <header className="topbar">
+        <span className="wordmark">
+          English <em>Practice</em>
+        </span>
+        <nav className="topbar__nav">
+          {TABS.map((t) => (
+            <button
+              key={t.id}
+              className={tab === t.id ? "is-active" : ""}
+              onClick={() => setTab(t.id)}
+            >
+              {t.label}
+            </button>
+          ))}
+        </nav>
       </header>
 
-      <nav className="app__nav">
-        <button className={tab === "flashcards" ? "active" : ""} onClick={() => setTab("flashcards")}>
-          플래시카드
-        </button>
-        <button className={tab === "quiz" ? "active" : ""} onClick={() => setTab("quiz")}>
-          퀴즈
-        </button>
-        <button className={tab === "words" ? "active" : ""} onClick={() => setTab("words")}>
-          단어장
-        </button>
-      </nav>
-
       <main className="app__main">
-        {tab === "flashcards" && <Flashcards words={words} onReview={reviewWord} />}
+        <p className="meta-pill">
+          <span className="meta-pill__dot" />
+          단어 {stats.total} · 복습 대기 {stats.due} · 암기 완료{" "}
+          {stats.mastered}
+        </p>
+
+        {tab === "flashcards" && (
+          <Flashcards words={words} onReview={reviewWord} />
+        )}
         {tab === "quiz" && (
           <Quiz key={words.length} words={words} onReview={reviewWord} />
         )}
         {tab === "words" && (
-          <WordList words={words} onAdd={addWord} onUpdate={updateWord} onDelete={deleteWord} />
+          <WordList
+            words={words}
+            onAdd={addWord}
+            onUpdate={updateWord}
+            onDelete={deleteWord}
+          />
         )}
       </main>
     </div>

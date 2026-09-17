@@ -8,7 +8,12 @@ interface WordFormProps {
   onCancel?: () => void;
 }
 
-export function WordForm({ onSubmit, initial, submitLabel = "추가", onCancel }: WordFormProps) {
+export function WordForm({
+  onSubmit,
+  initial,
+  submitLabel = "단어 추가",
+  onCancel,
+}: WordFormProps) {
   const [term, setTerm] = useState(initial?.term ?? "");
   const [meaning, setMeaning] = useState(initial?.meaning ?? "");
   const [example, setExample] = useState(initial?.example ?? "");
@@ -25,31 +30,35 @@ export function WordForm({ onSubmit, initial, submitLabel = "추가", onCancel }
   };
 
   return (
-    <form className="word-form" onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="단어 (예: apple)"
-        value={term}
-        onChange={(e) => setTerm(e.target.value)}
-        required
-      />
-      <input
-        type="text"
-        placeholder="뜻 (예: 사과)"
-        value={meaning}
-        onChange={(e) => setMeaning(e.target.value)}
-        required
-      />
+    <form className="form" onSubmit={handleSubmit}>
+      <div className="form__grid">
+        <input
+          type="text"
+          placeholder="단어"
+          value={term}
+          onChange={(e) => setTerm(e.target.value)}
+          required
+        />
+        <input
+          type="text"
+          placeholder="뜻"
+          value={meaning}
+          onChange={(e) => setMeaning(e.target.value)}
+          required
+        />
+      </div>
       <input
         type="text"
         placeholder="예문 (선택)"
         value={example}
         onChange={(e) => setExample(e.target.value)}
       />
-      <div className="word-form__actions">
-        <button type="submit">{submitLabel}</button>
+      <div className="form__actions">
+        <button type="submit" className="btn btn--primary">
+          {submitLabel}
+        </button>
         {onCancel && (
-          <button type="button" className="secondary" onClick={onCancel}>
+          <button type="button" className="btn btn--ghost" onClick={onCancel}>
             취소
           </button>
         )}
